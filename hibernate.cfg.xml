@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+   "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+   "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+<!-- 		<property name="hibernate.hbm2ddl.auto">create</property> -->
+		<property name="connection.url">
+			jdbc:mysql://localhost/kickertool
+		</property>
+		<property name="connection.username">kickertool</property>
+		<property name="connection.password">kickertool</property>
+
+		<property name="connection.driver_class">
+			com.mysql.jdbc.Driver
+		</property>
+		<property name="dialect">
+			org.hibernate.dialect.MySQLDialect
+		</property>
+
+		<property name="cache.provider_class">
+			org.hibernate.cache.EhCacheProvider
+		</property>
+		<property name="current_session_context_class">thread
+		</property>
+		<property name="hibernate.transaction.factory_class">
+			org.hibernate.transaction.JDBCTransactionFactory
+		</property>
+		<mapping class="de.torsten.kickertool.model.Player" />
+		<mapping class="de.torsten.kickertool.model.Game" />
+		<mapping class="de.torsten.kickertool.model.Team" />
+		<mapping class="de.torsten.kickertool.model.Play" />
+		<mapping class="de.torsten.kickertool.model.Discipline" />
+		<mapping class="de.torsten.kickertool.model.Set" />
+		<mapping class="de.torsten.kickertool.model.PlayerPoints" />
+
+	</session-factory>
+</hibernate-configuration>
