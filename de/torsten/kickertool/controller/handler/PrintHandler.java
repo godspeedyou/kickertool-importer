@@ -56,9 +56,9 @@ public final class PrintHandler implements EventHandler<ActionEvent> {
 				return i++;
 			}
 		};
-		sb.append(
-				"[tr][td][b]Platz[/b][/td][td][b]Spieler[/b][/td][td][b]Punkte[/b][/td][td][b]Anzahl Spiele[/b][/td][td][b]Punkte innerhalb der Spiele[/b][/td][td][b]Preisgeld in Euro (gesamt "
-						+ existingPlayers.stream().mapToDouble(Player::getMoney).sum() + " Euro)[/b][/td][/tr]");
+		sb.append("[tr][td][b]Platz[/b][/td][td][b]Spieler[/b][/td][td][b]Punkte[/b][/td][td][b]" + Player.TITLE_GAMES
+				+ "[/b][/td][td][b]" + Player.TITLE_IN_GAME_POINTS + "[/b][/td][td][b]Preisgeld in Euro (gesamt "
+				+ existingPlayers.stream().mapToDouble(Player::getMoney).sum() + " Euro)[/b][/td][/tr]");
 		new ArrayList<>(existingPlayers).stream().sorted().forEach(p -> sb.append(createTableRow(p, counter.get())));
 		sb.append("[/table]");
 

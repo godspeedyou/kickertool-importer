@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -72,6 +73,7 @@ public class Runner extends Application implements de.torsten.kickertool.view.Ta
 	private TabPane tabPane;
 	private Collection<Game> games = new HashSet<>();
 	private TreeView<GenericTreeItem<?>> tree;
+	private Stage primaryStage;
 
 	public static void main(String[] args) throws JsonSyntaxException, JsonIOException, IOException {
 		launch(args);
@@ -98,7 +100,7 @@ public class Runner extends Application implements de.torsten.kickertool.view.Ta
 
 		Collection<Player> loadAllPlayers = loadAllPlayers();
 		existingPlayers = FXCollections.observableArrayList(loadAllPlayers);
-
+		this.primaryStage = stage;
 		createView(stage);
 	}
 
@@ -112,13 +114,31 @@ public class Runner extends Application implements de.torsten.kickertool.view.Ta
 
 	private void createView(Stage stage) {
 		stage.setTitle("DYP");
-		stage.setWidth(800);
-		stage.setHeight(500);
+
+		Preferences userPrefs = Preferences.userNodeForPackage(getClass());
+		// get window location from user preferences: use x=100, y=100, width=400, height=400 as default
+		double x = userPrefs.getDouble("stage.x", 100);
+		double y = userPrefs.getDouble("stage.y", 100);
+		double w = userPrefs.getDouble("stage.width", 400);
+		double h = userPrefs.getDouble("stage.height", 400);
+
+		stage.setX(x);
+		stage.setY(y);
+		stage.setWidth(w);
+		stage.setHeight(h);
 
 		Scene scene = createScene(stage);
 		stage.setScene(scene);
-		stage.centerOnScreen();
 		stage.show();
+	}
+
+	@Override
+	public void stop() {
+		Preferences userPrefs = Preferences.userNodeForPackage(getClass());
+		userPrefs.putDouble("stage.x", primaryStage.getX());
+		userPrefs.putDouble("stage.y", primaryStage.getY());
+		userPrefs.putDouble("stage.width", primaryStage.getWidth());
+		userPrefs.putDouble("stage.height", primaryStage.getHeight());
 	}
 
 	private TableView<Player> createTable(ObservableList<Player> players) {
@@ -127,9 +147,9 @@ public class Runner extends Application implements de.torsten.kickertool.view.Ta
 
 		TableColumn<Player, Number> pointsCol = createPointsColumn();
 
-		TableColumn<Player, Number> inGamepointsCol = createSimpleColumn("Punkte innerhalb der Spiele",
+		TableColumn<Player, Number> inGamepointsCol = createSimpleColumn(Player.TITLE_IN_GAME_POINTS,
 				Player.FIELD_IN_GAME_POINTS);
-		TableColumn<Player, Number> gamesCol = createSimpleColumn("Anzahl Spiele", Player.FIELD_GAMES);
+		TableColumn<Player, Number> gamesCol = createSimpleColumn(Player.TITLE_GAMES, Player.FIELD_GAMES);
 		TableColumn<Player, Number> positionCol = createSimpleColumn("#", Player.FIELD_POSITION);
 		TableColumn<Player, Number> moneyCol = createSimpleColumn("Geldgewinn", Player.FIELD_MONEY);
 

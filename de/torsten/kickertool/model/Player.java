@@ -33,6 +33,8 @@ public class Player implements Comparable<Player> {
 	public static final String FIELD_MONEY = "money"; //$NON-NLS-1$
 	public static final String FIELD_IN_GAME_POINTS = "inGamePoints"; //$NON-NLS-1$
 	public static final String FIELD_POSITION = "position"; //$NON-NLS-1$
+	public static final String TITLE_GAMES = "Anzahl Dyp-Teilnahmen"; //$NON-NLS-1$
+	public static final String TITLE_IN_GAME_POINTS = "Punkte innerhalb einer Teilnahme"; //$NON-NLS-1$
 	private String id;
 	private final SimpleBooleanProperty monthlyPayer = new SimpleBooleanProperty();
 
@@ -51,6 +53,7 @@ public class Player implements Comparable<Player> {
 	// TODO Anzahl der aktuellen Turniere
 	// TODO Anzahl Tore: Plus, Minus, Plus-Minus
 	// TODO beste Teams (welche Teams haben am meisten gewonnen
+	// TODO x von y Spielen
 
 	public Player() {
 	}
