@@ -44,11 +44,6 @@ public class Runner extends Application implements de.torsten.kickertool.view.Ta
 
 	@Override
 	public void addTab(Game importGame) {
-		// TODO hier oder woanders muss noch mit den existierenden Playern (aus der DB) gesynct werden. Sync wird
-		// momentan nur innerhalb eines Games gemacht.
-		// TODO am besten erst die zwei Rohlisten (Players, Teams) eines Games syncen, dann kann das Game, wie bisher,
-		// sich selbst syncen,
-		// ==> geht nicht, weil Namen erst korrigiert werden müssen
 		tabPane.getTabs().add(creator.createGameTab(importGame));
 		games.add(importGame);
 	}
@@ -64,7 +59,7 @@ public class Runner extends Application implements de.torsten.kickertool.view.Ta
 		Collection<Player> loadAllPlayers = loadAllPlayers();
 		existingPlayers = FXCollections.observableArrayList(loadAllPlayers);
 		this.primaryStage = stage;
-		creator = new ViewCreator(tree, tabPane, existingPlayers, new ImportDypHandler(stage, this, this));
+		creator = new ViewCreator(tree, tabPane, existingPlayers, games, new ImportDypHandler(stage, this, this));
 		creator.createView(stage);
 	}
 
