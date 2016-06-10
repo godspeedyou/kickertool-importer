@@ -59,7 +59,8 @@ public class Runner extends Application implements de.torsten.kickertool.view.Ta
 		Collection<Player> loadAllPlayers = loadAllPlayers();
 		existingPlayers = FXCollections.observableArrayList(loadAllPlayers);
 		this.primaryStage = stage;
-		creator = new ViewCreator(tree, tabPane, existingPlayers, games, new ImportDypHandler(stage, this, this));
+		creator = new ViewCreator(tree, tabPane, existingPlayers, games, new ImportDypHandler(stage, this, this),
+				getUserPrefs());
 		creator.createView(stage);
 	}
 
@@ -73,11 +74,15 @@ public class Runner extends Application implements de.torsten.kickertool.view.Ta
 
 	@Override
 	public void stop() {
-		Preferences userPrefs = Preferences.userNodeForPackage(getClass());
+		Preferences userPrefs = getUserPrefs();
 		userPrefs.putDouble("stage.x", primaryStage.getX());
 		userPrefs.putDouble("stage.y", primaryStage.getY());
 		userPrefs.putDouble("stage.width", primaryStage.getWidth());
 		userPrefs.putDouble("stage.height", primaryStage.getHeight());
+	}
+
+	private Preferences getUserPrefs() {
+		return Preferences.userNodeForPackage(getClass());
 	}
 
 	@Override

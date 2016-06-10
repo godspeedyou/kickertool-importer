@@ -54,6 +54,8 @@ public class Player implements Comparable<Player> {
 	// TODO Anzahl Tore: Plus, Minus, Plus-Minus
 	// TODO beste Teams (welche Teams haben am meisten gewonnen
 	// TODO x von y Spielen
+	// TODO Reingewinn, aber nicht exportieren
+	// TODO Spieltag mit max. Teilnehmern
 
 	public Player() {
 	}
