@@ -104,6 +104,26 @@ public class GameController {
 	}
 
 	public void syncPlayers(Collection<Player> existingPlayers, Game game) {
+		syncToExistingPlayers(existingPlayers, game);
+
+		double pot = existingPlayers.stream().mapToInt(Player::getGames).sum();
+
+		List<Player> sortedPlayers = getDypPointSortedPlayers(existingPlayers);
+		IteratorSupplier percentages = new IteratorSupplier(DYP_TOUR_POT_PERCENTAGES);
+		for (Player player : sortedPlayers) {
+			Integer percentage = percentages.get();
+			player.setMoney(pot * percentage / 100.);
+			player.setMoneyPercentage(percentage);
+			player.setAveragePoints((double) player.getPoints() / player.getGames());
+		}
+
+		int i = 1;
+		for (Player player : sortedPlayers) {
+			player.setPosition(i++);
+		}
+	}
+
+	private void syncToExistingPlayers(Collection<Player> existingPlayers, Game game) {
 		Collection<Player> newPlayers = new ArrayList<>();
 		current: for (Player player : game.getPlayers()) {
 			for (Player existingPlayer : existingPlayers) {
@@ -122,19 +142,6 @@ public class GameController {
 			newPlayers.add(player);
 		}
 		existingPlayers.addAll(newPlayers);
-
-		double pot = existingPlayers.stream().mapToInt(Player::getGames).sum();
-
-		List<Player> sortedPlayers = getDypPointSortedPlayers(existingPlayers);
-		IteratorSupplier percentages = new IteratorSupplier(DYP_TOUR_POT_PERCENTAGES);
-		for (Player player : sortedPlayers) {
-			player.setMoney(pot * percentages.get() / 100.);
-		}
-
-		int i = 1;
-		for (Player player : sortedPlayers) {
-			player.setPosition(i++);
-		}
 	}
 
 	private List<Player> getDypPointSortedPlayers(Collection<Player> existingPlayers) {

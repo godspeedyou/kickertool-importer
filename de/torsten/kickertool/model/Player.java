@@ -53,17 +53,18 @@ public class Player implements Comparable<Player> {
 	private final SimpleIntegerProperty games = new SimpleIntegerProperty();
 	@ViewColumn(title = TITLE_IN_GAME_POINTS, columnPosition = 50, rankSortPosition = 20, isPrintable = true)
 	private final SimpleIntegerProperty inGamePoints = new SimpleIntegerProperty();
-	@ViewColumn(title = "Geldgewinn", columnPosition = 60, isPrintable = true)
+	@ViewColumn(title = "Prozent am Gesamtgewinn", columnPosition = 60, isPrintable = true)
+	private final SimpleIntegerProperty moneyPercentage = new SimpleIntegerProperty();
+	@ViewColumn(title = "Durchschnittliche Punktzahl pro Turnier", columnPosition = 70, isPrintable = true)
+	private final SimpleDoubleProperty averagePoints = new SimpleDoubleProperty();
+	@ViewColumn(title = "Geldgewinn", columnPosition = 80, isPrintable = true)
 	private final SimpleDoubleProperty money = new SimpleDoubleProperty();
-	// TODO Prozentgewinnschlüssel
-	// TODO Teilnahme an Datum anzeigen
-	// TODO Durchschnittliche Punktzahl pro Turnier
-	// TODO Anzahl der aktuellen Turniere
 	// TODO Anzahl Tore: Plus, Minus, Plus-Minus
-	// TODO beste Teams (welche Teams haben am meisten gewonnen
 	// TODO x von y Spielen
 	// TODO Reingewinn, aber nicht exportieren
 	// TODO Spieltag mit max. Teilnehmern
+	// TODO Teilnahme an Datum anzeigen
+	// TODO beste Teams (welche Teams haben am meisten gewonnen
 
 	public Player() {
 	}
@@ -202,4 +203,21 @@ public class Player implements Comparable<Player> {
 		this.money.set(money);
 	}
 
+	@Transient
+	public int getMoneyPercentage() {
+		return moneyPercentage.get();
+	}
+
+	public void setMoneyPercentage(int moneyPercentage) {
+		this.moneyPercentage.set(moneyPercentage);
+	}
+
+	@Transient
+	public double getAveragePoints() {
+		return averagePoints.get();
+	}
+
+	public void setAveragePoints(double averagePoints) {
+		this.averagePoints.set(averagePoints);
+	}
 }

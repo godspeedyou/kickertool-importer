@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.Joiner;
 
+import de.torsten.kickertool.model.Game;
 import de.torsten.kickertool.model.Player;
 import de.torsten.kickertool.view.column.ColumnCreator;
 import de.torsten.kickertool.view.column.SortableColumn;
@@ -40,10 +41,12 @@ public final class PrintHandler implements EventHandler<ActionEvent> {
 	private final Window stage;
 	private final ObservableList<Player> existingPlayers;
 	private static final Logger LOGGER = Logger.getLogger(PrintHandler.class.getSimpleName());
+	private final Collection<Game> games;
 
-	public PrintHandler(Window window, ObservableList<Player> existingPlayers) {
+	public PrintHandler(Window window, ObservableList<Player> existingPlayers, Collection<Game> games) {
 		this.stage = window;
 		this.existingPlayers = existingPlayers;
+		this.games = games;
 	}
 
 	@Override
@@ -102,9 +105,10 @@ public final class PrintHandler implements EventHandler<ActionEvent> {
 	}
 
 	private String createTableHeader(Collection<String> titles) {
-		return "[tr]" + titles.stream().map(t -> tableData(bold(t))).collect(Collectors.joining()) + tableData(bold(
-				"Jackpot in Euro: " + String.valueOf(existingPlayers.stream().mapToDouble(Player::getMoney).sum())))
-				+ "[/tr]";
+		return "[tr]" + titles.stream().map(t -> tableData(bold(t))).collect(Collectors.joining())
+				+ tableData(bold("Jackpot in Euro: "
+						+ String.valueOf(existingPlayers.stream().mapToDouble(Player::getMoney).sum())))
+				+ "Anzahl der Turniere: " + games.size() + "[/tr]";
 	}
 
 	private String tableData(String string) {
