@@ -57,11 +57,19 @@ public class Player implements Comparable<Player> {
 	private final SimpleIntegerProperty moneyPercentage = new SimpleIntegerProperty();
 	@ViewColumn(title = "Durchschnittliche Punktzahl pro Turnier", columnPosition = 70, isPrintable = true)
 	private final SimpleDoubleProperty averagePoints = new SimpleDoubleProperty();
-	@ViewColumn(title = "Geldgewinn", columnPosition = 80, isPrintable = true)
+	@ViewColumn(title = "Tore (positiv)", columnPosition = 80, isPrintable = true)
+	private final SimpleIntegerProperty goalsPositive = new SimpleIntegerProperty();
+	@ViewColumn(title = "Tore (negativ)", columnPosition = 90, isPrintable = true)
+	private final SimpleIntegerProperty goalsNegative = new SimpleIntegerProperty();
+	@ViewColumn(title = "Tore (+/-)", columnPosition = 100, isPrintable = true)
+	private int goalsSum;
+	@ViewColumn(title = "Geldgewinn", columnPosition = 110, isPrintable = true)
 	private final SimpleDoubleProperty money = new SimpleDoubleProperty();
-	// TODO Anzahl Tore: Plus, Minus, Plus-Minus
+	@ViewColumn(title = "Reingewinn", columnPosition = 120)
+	private final SimpleDoubleProperty margin = new SimpleDoubleProperty();
+
+	// TODO Anzahl Tore Durchschnitt pro Spiel: Plus, Minus, Plus-Minus
 	// TODO x von y Spielen
-	// TODO Reingewinn, aber nicht exportieren
 	// TODO Spieltag mit max. Teilnehmern
 	// TODO Teilnahme an Datum anzeigen
 	// TODO beste Teams (welche Teams haben am meisten gewonnen
@@ -220,4 +228,49 @@ public class Player implements Comparable<Player> {
 	public void setAveragePoints(double averagePoints) {
 		this.averagePoints.set(averagePoints);
 	}
+
+	@Transient
+	public double getMargin() {
+		return margin.get();
+	}
+
+	public void setMargin(double margin) {
+		this.margin.set(margin);
+	}
+
+	@Transient
+	public int getGoalsPositive() {
+		return goalsPositive.get();
+	}
+
+	public void setGoalsPositive(int goalsPositive) {
+		this.goalsPositive.set(goalsPositive);
+	}
+
+	public void addGoalsPositive(int newGoalsPositive) {
+		goalsPositive.set(goalsPositive.get() + newGoalsPositive);
+	}
+
+	public void setGoalsNegative(int goalsNegative) {
+		this.goalsNegative.set(goalsNegative);
+	}
+
+	@Transient
+	public int getGoalsNegative() {
+		return goalsNegative.get();
+	}
+
+	public void addGoalsNegative(int newGoalsNegative) {
+		goalsNegative.set(goalsNegative.get() - newGoalsNegative);
+	}
+
+	@Transient
+	public int getGoalsSum() {
+		return goalsSum;
+	}
+
+	public void setGoalsSum(int goalsSum) {
+		this.goalsSum = goalsSum;
+	}
+
 }

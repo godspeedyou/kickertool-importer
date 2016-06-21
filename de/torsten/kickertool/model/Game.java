@@ -56,6 +56,10 @@ public class Game {
 
 	private Collection<PlayerPoints> playerPoints = new ArrayList<>();
 
+	private final Map<Player, Integer> playerToPositiveGoals = new HashMap<>();
+
+	private final Map<Player, Integer> playerToNegativeGoals = new HashMap<>();
+
 	public Game() {
 	}
 
@@ -81,6 +85,8 @@ public class Game {
 		} else {
 			playerPoints.stream().forEach(p -> playerToDypPoints.put(p.getPlayer(), p));
 		}
+		this.players.stream().forEach(p -> playerToPositiveGoals.put(p, 0));
+		this.players.stream().forEach(p -> playerToNegativeGoals.put(p, 0));
 	}
 
 	private void initPlayerPoints(Map<Player, PlayerPoints> playerToPoints) {
@@ -89,6 +95,14 @@ public class Game {
 
 	public void addInGamePoints(Player player, int points) {
 		playerToInGamePoints.get(player).add(points);
+	}
+
+	public void addPositiveGoals(Player player, int positiveGoals) {
+		playerToPositiveGoals.put(player, playerToPositiveGoals.get(player) + positiveGoals);
+	}
+
+	public void addNegativeGoals(Player player, int negativeGoals) {
+		playerToNegativeGoals.put(player, playerToNegativeGoals.get(player) + negativeGoals);
 	}
 
 	public void addDypPoints(Player player, int points) {
@@ -201,6 +215,22 @@ public class Game {
 		return points.getPoints();
 	}
 
+	public int getGoalsPositive(Player player) {
+		Integer points = playerToPositiveGoals.get(player);
+		if (points == null) {
+			return 0;
+		}
+		return points;
+	}
+
+	public int getGoalsNegative(Player player) {
+		Integer points = playerToNegativeGoals.get(player);
+		if (points == null) {
+			return 0;
+		}
+		return points;
+	}
+
 	@OneToMany(cascade = javax.persistence.CascadeType.ALL)
 	public Collection<PlayerPoints> getPlayerPoints() {
 		return playerPoints;
@@ -209,4 +239,5 @@ public class Game {
 	public void setPlayerPoints(Collection<PlayerPoints> playerPoints) {
 		this.playerPoints = playerPoints;
 	}
+
 }

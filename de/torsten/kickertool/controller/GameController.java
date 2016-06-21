@@ -113,14 +113,27 @@ public class GameController {
 		for (Player player : sortedPlayers) {
 			Integer percentage = percentages.get();
 			player.setMoney(pot * percentage / 100.);
+
+			int games = player.getGames();
+			player.setMargin(getMargin(player, games));
 			player.setMoneyPercentage(percentage);
-			player.setAveragePoints((double) player.getPoints() / player.getGames());
+			player.setAveragePoints((double) player.getPoints() / games);
+			player.setGoalsSum(player.getGoalsPositive() + player.getGoalsNegative());
 		}
 
 		int i = 1;
 		for (Player player : sortedPlayers) {
 			player.setPosition(i++);
 		}
+	}
+
+	private double getMargin(Player player, int games) {
+		int entryFee = games;
+		if (!player.isMonthlyPayer()) {
+			entryFee *= 3;
+		}
+		double margin = player.getMoney() - entryFee;
+		return margin;
 	}
 
 	private void syncToExistingPlayers(Collection<Player> existingPlayers, Game game) {
@@ -133,6 +146,8 @@ public class GameController {
 					existingPlayer.addPoints(game.getDypPoints(player));
 					existingPlayer.addGames(1);
 					existingPlayer.addInGamePoints(game.getInGamePoints(player));
+					existingPlayer.addGoalsPositive(game.getGoalsPositive(player));
+					existingPlayer.addGoalsNegative(game.getGoalsNegative(player));
 					continue current;
 				}
 			}
@@ -173,6 +188,7 @@ public class GameController {
 			for (Discipline discipline : disciplines) {
 				for (Set set : discipline.getSets()) {
 					Team winnerTeam = getWinnerTeam(team1, team2, set);
+					setGoals(team1, team2, set, game);
 					if (winnerTeam != null) {
 						addPoints(game, winnerTeam, POINTS_WIN);
 					} else {
@@ -181,6 +197,18 @@ public class GameController {
 					}
 				}
 			}
+		}
+	}
+
+	private void setGoals(Team team1, Team team2, Set set, Game game) {
+		setGoals(set.getTeam1(), set.getTeam2(), team1, game);
+		setGoals(set.getTeam2(), set.getTeam1(), team2, game);
+	}
+
+	private void setGoals(int positiveGoals, int negativeGoals, Team team, Game game) {
+		for (Player player : team.getPlayers()) {
+			game.addPositiveGoals(player, positiveGoals);
+			game.addNegativeGoals(player, negativeGoals);
 		}
 	}
 
