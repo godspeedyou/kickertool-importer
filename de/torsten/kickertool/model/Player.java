@@ -9,8 +9,6 @@ www.energymeteo.com
 
 package de.torsten.kickertool.model;
 
-import java.util.function.BiConsumer;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,14 +18,13 @@ import javax.persistence.Transient;
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 
-import de.torsten.kickertool.view.ColumnType;
-import de.torsten.kickertool.view.ViewColumn;
+import de.torsten.kickertool.view.column.ColumnType;
+import de.torsten.kickertool.view.column.ViewColumn;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.util.Callback;
 
 @Entity
 public class Player implements Comparable<Player> {
@@ -39,25 +36,25 @@ public class Player implements Comparable<Player> {
 	public static final String FIELD_IN_GAME_POINTS = "inGamePoints"; //$NON-NLS-1$
 	public static final String FIELD_POSITION = "position"; //$NON-NLS-1$
 	public static final String TITLE_GAMES = "Anzahl Dyp-Teilnahmen"; //$NON-NLS-1$
-	public static final String TITLE_IN_GAME_POINTS = "Punkte innerhalb einer Teilnahme"; //$NON-NLS-1$
+	public static final String TITLE_IN_GAME_POINTS = "Punkte innerhalb aller Teilnahmen"; //$NON-NLS-1$
 	private String id;
 	@ViewColumn(title = "Monatsbeitragzahler", columnPosition = 40)
 	private final SimpleBooleanProperty monthlyPayer = new SimpleBooleanProperty();
 
 	private int identifier;
 
-	@ViewColumn(title = "Name", columnPosition = 10, type = ColumnType.EDITABLE)
-	private final SimpleStringProperty name = new SimpleStringProperty();
-	@ViewColumn(title = "Punkte", columnPosition = 20, rankSortPosition = 0, type = ColumnType.EDITABLE)
-	private final SimpleIntegerProperty points = new SimpleIntegerProperty();
-	@ViewColumn(title = TITLE_IN_GAME_POINTS, columnPosition = 60, rankSortPosition = 20)
-	private final SimpleIntegerProperty inGamePoints = new SimpleIntegerProperty();
-	@ViewColumn(title = TITLE_GAMES, columnPosition = 30, rankSortPosition = 10)
-	private final SimpleIntegerProperty games = new SimpleIntegerProperty();
-	@ViewColumn(title = "Geldgewinn", columnPosition = 50)
-	private final SimpleDoubleProperty money = new SimpleDoubleProperty();
-	@ViewColumn(title = "#", columnPosition = 0)
+	@ViewColumn(title = "#", columnPosition = 0, isPrintable = true)
 	private final SimpleIntegerProperty position = new SimpleIntegerProperty();
+	@ViewColumn(title = "Name", columnPosition = 10, type = ColumnType.EDITABLE, isPrintable = true)
+	private final SimpleStringProperty name = new SimpleStringProperty();
+	@ViewColumn(title = "Punkte", columnPosition = 20, rankSortPosition = 0, type = ColumnType.EDITABLE, isPrintable = true)
+	private final SimpleIntegerProperty points = new SimpleIntegerProperty();
+	@ViewColumn(title = TITLE_GAMES, columnPosition = 30, rankSortPosition = 10, isPrintable = true)
+	private final SimpleIntegerProperty games = new SimpleIntegerProperty();
+	@ViewColumn(title = TITLE_IN_GAME_POINTS, columnPosition = 50, rankSortPosition = 20, isPrintable = true)
+	private final SimpleIntegerProperty inGamePoints = new SimpleIntegerProperty();
+	@ViewColumn(title = "Geldgewinn", columnPosition = 60, isPrintable = true)
+	private final SimpleDoubleProperty money = new SimpleDoubleProperty();
 	// TODO Prozentgewinnschlüssel
 	// TODO Teilnahme an Datum anzeigen
 	// TODO Durchschnittliche Punktzahl pro Turnier
@@ -203,16 +200,6 @@ public class Player implements Comparable<Player> {
 
 	public void setMoney(double money) {
 		this.money.set(money);
-	}
-
-	public static BiConsumer getBiConsumer(String name2) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public static Callback getTableCell(String name2) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

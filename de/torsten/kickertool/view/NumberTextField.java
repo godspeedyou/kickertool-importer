@@ -1,15 +1,14 @@
 package de.torsten.kickertool.view;
+
 import javafx.scene.control.TextField;
 
 /************************************************
-
-copyright (c) energy & meteo systems GmbH, 2016
-
-mail@energymeteo.com
-www.energymeteo.com
-
-************************************************/
-
+ * 
+ * copyright (c) energy & meteo systems GmbH, 2016
+ * 
+ * mail@energymeteo.com www.energymeteo.com
+ * 
+ ************************************************/
 
 public class NumberTextField extends TextField {
 
@@ -28,7 +27,7 @@ public class NumberTextField extends TextField {
 	}
 
 	private boolean validate(String text) {
-		return text.matches("[0-9]*");
+		return text.matches("[0-9]*"); //$NON-NLS-1$
 	}
 
 	public Number getNumber() {
