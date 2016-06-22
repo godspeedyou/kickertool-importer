@@ -18,7 +18,6 @@ import de.torsten.kickertool.view.ViewCreator;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeView;
 import javafx.stage.Stage;
 
@@ -29,23 +28,16 @@ import javafx.stage.Stage;
  ************************************************/
 
 @SuppressWarnings("nls")
-public class Runner extends Application implements de.torsten.kickertool.view.TabPane<Game>, TreeOwner {
+public class Runner extends Application implements TreeOwner {
 	static final Logger LOGGER = Logger.getLogger(Runner.class.getSimpleName());
 	private ObservableList<Player> existingPlayers;
 	private Collection<Game> games = new HashSet<>();
 	private TreeView<GenericTreeItem<?>> tree;
 	private Stage primaryStage;
-	private TabPane tabPane;
 	private ViewCreator creator;
 
 	public static void main(String[] args) throws JsonSyntaxException, JsonIOException, IOException {
 		launch(args);
-	}
-
-	@Override
-	public void addTab(Game importGame) {
-		tabPane.getTabs().add(creator.createGameTab(importGame));
-		games.add(importGame);
 	}
 
 	@Override
@@ -59,8 +51,8 @@ public class Runner extends Application implements de.torsten.kickertool.view.Ta
 		Collection<Player> loadAllPlayers = loadAllPlayers();
 		existingPlayers = FXCollections.observableArrayList(loadAllPlayers);
 		this.primaryStage = stage;
-		creator = new ViewCreator(tree, tabPane, existingPlayers, games, new ImportDypHandler(stage, this, this),
-				getUserPrefs());
+		creator = new ViewCreator(tree, existingPlayers, games, getUserPrefs());
+		creator.setImportDypHandler(new ImportDypHandler(stage, creator, this));
 		creator.createView(stage);
 	}
 

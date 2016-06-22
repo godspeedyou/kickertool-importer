@@ -17,7 +17,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 
 public class DoubleColumnCreator extends ColumnCreator<Double> {
-	private final class DoublePrecisionStringConverter extends StringConverter<Double> {
+	public static final class DoublePrecisionStringConverter extends StringConverter<Double> {
 		private final NumberFormat nf = NumberFormat.getNumberInstance();
 
 		public DoublePrecisionStringConverter() {

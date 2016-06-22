@@ -49,33 +49,31 @@ public class Player implements Comparable<Player> {
 	private final SimpleStringProperty name = new SimpleStringProperty();
 	@ViewColumn(title = "Punkte", columnPosition = 20, rankSortPosition = 0, type = ColumnType.EDITABLE, isPrintable = true)
 	private final SimpleIntegerProperty points = new SimpleIntegerProperty();
+	@ViewColumn(title = "Punkte \u2300", columnPosition = 25, isPrintable = true)
+	private final SimpleDoubleProperty averagePoints = new SimpleDoubleProperty();
 	@ViewColumn(title = TITLE_GAMES, columnPosition = 30, rankSortPosition = 10, isPrintable = true)
 	private final SimpleIntegerProperty games = new SimpleIntegerProperty();
 	@ViewColumn(title = TITLE_IN_GAME_POINTS, columnPosition = 50, rankSortPosition = 20, isPrintable = true)
 	private final SimpleIntegerProperty inGamePoints = new SimpleIntegerProperty();
-	@ViewColumn(title = "Prozent am Gesamtgewinn", columnPosition = 60, isPrintable = true)
-	private final SimpleIntegerProperty moneyPercentage = new SimpleIntegerProperty();
-	@ViewColumn(title = "Punkte \u2300", columnPosition = 70, isPrintable = true)
-	private final SimpleDoubleProperty averagePoints = new SimpleDoubleProperty();
-	@ViewColumn(title = "Tore (positiv)", columnPosition = 80, isPrintable = true)
+	@ViewColumn(title = "Tore (+)", columnPosition = 60, isPrintable = true)
 	private final SimpleIntegerProperty goalsPositive = new SimpleIntegerProperty();
-	@ViewColumn(title = "Tore (negativ)", columnPosition = 90, isPrintable = true)
+	@ViewColumn(title = "Tore (+) \u2300", columnPosition = 70, isPrintable = true)
+	private final SimpleDoubleProperty averageGoalsPositive = new SimpleDoubleProperty();
+	@ViewColumn(title = "Tore (-)", columnPosition = 80, isPrintable = true)
 	private final SimpleIntegerProperty goalsNegative = new SimpleIntegerProperty();
+	@ViewColumn(title = "Tore (-) \u2300", columnPosition = 90, isPrintable = true)
+	private final SimpleDoubleProperty averageGoalsNegative = new SimpleDoubleProperty();
 	@ViewColumn(title = "Tore (+/-)", columnPosition = 100, isPrintable = true)
 	private final SimpleIntegerProperty goalsSum = new SimpleIntegerProperty();
-	@ViewColumn(title = "Tore (positiv) \u2300", columnPosition = 110, isPrintable = true)
-	private final SimpleDoubleProperty averageGoalsPositive = new SimpleDoubleProperty();
-	@ViewColumn(title = "Tore (negativ) \u2300", columnPosition = 120, isPrintable = true)
-	private final SimpleDoubleProperty averageGoalsNegative = new SimpleDoubleProperty();
 	@ViewColumn(title = "Tore (+/-) \u2300", columnPosition = 130, isPrintable = true)
 	private final SimpleDoubleProperty averageGoalsSum = new SimpleDoubleProperty();
 	@ViewColumn(title = "Geldgewinn", columnPosition = 140, isPrintable = true)
 	private final SimpleDoubleProperty money = new SimpleDoubleProperty();
+	@ViewColumn(title = "Prozent am Gesamtgewinn", columnPosition = 145, isPrintable = true)
+	private final SimpleIntegerProperty moneyPercentage = new SimpleIntegerProperty();
 	@ViewColumn(title = "Reingewinn", columnPosition = 150)
 	private final SimpleDoubleProperty margin = new SimpleDoubleProperty();
 
-	// TODO x von y Spielen
-	// TODO Spieltag mit max. Teilnehmern
 	// TODO Teilnahme an Datum anzeigen
 	// TODO beste Teams (welche Teams haben am meisten gewonnen
 

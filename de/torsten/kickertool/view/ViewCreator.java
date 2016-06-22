@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import de.torsten.kickertool.controller.GameController;
 import de.torsten.kickertool.controller.handler.FirstGamePlayersImporter;
+import de.torsten.kickertool.controller.handler.ImportDypHandler;
 import de.torsten.kickertool.controller.handler.PrintHandler;
 import de.torsten.kickertool.controller.handler.SaveHandler;
 import de.torsten.kickertool.model.Game;
@@ -57,22 +58,26 @@ import javafx.util.converter.NumberStringConverter;
  * 
  ************************************************/
 
-public final class ViewCreator {
+public final class ViewCreator implements de.torsten.kickertool.view.TabPane<Game> {
 	private TreeView<GenericTreeItem<?>> tree;
 	private TabPane tabPane;
 	private final ObservableList<Player> existingPlayers;
-	private final EventHandler<ActionEvent> importDypHandler;
+	private EventHandler<ActionEvent> importDypHandler;
 	private final Collection<Game> games;
 	private final Preferences preferences;
 
-	public ViewCreator(TreeView<GenericTreeItem<?>> tree, TabPane tabPane, ObservableList<Player> existingPlayers,
-			Collection<Game> games, EventHandler<ActionEvent> importDypHandler, Preferences preferences) {
+	public ViewCreator(TreeView<GenericTreeItem<?>> tree, ObservableList<Player> existingPlayers,
+			Collection<Game> games, Preferences preferences) {
 		this.tree = tree;
-		this.tabPane = tabPane;
 		this.existingPlayers = existingPlayers;
 		this.games = games;
-		this.importDypHandler = importDypHandler;
 		this.preferences = preferences;
+	}
+
+	@Override
+	public void addTab(Game importGame) {
+		tabPane.getTabs().add(createGameTab(importGame));
+		games.add(importGame);
 	}
 
 	public void createView(Stage stage) {
@@ -293,7 +298,8 @@ public final class ViewCreator {
 	private Collection<MenuItem> createMenuItems(Stage stage) {
 		Collection<MenuItem> items = new ArrayList<>();
 		items.add(createMenuItem("DYP importieren", importDypHandler));
-		items.add(createMenuItem("Erste Spielerpunkte importieren", new FirstGamePlayersImporter(existingPlayers)));
+		items.add(
+				createMenuItem("Erste Spielerpunkte importieren", new FirstGamePlayersImporter(existingPlayers, this)));
 		items.add(createMenuItem("Speichern", new SaveHandler(existingPlayers, games)));
 		items.add(createMenuItem("Als Dynamic-Board-Tabelle exportieren",
 				new PrintHandler(stage, existingPlayers, games)));
@@ -315,6 +321,10 @@ public final class ViewCreator {
 		menuBar.getMenus().addAll(menuFile);
 
 		return menuBar;
+	}
+
+	public void setImportDypHandler(ImportDypHandler importDypHandler) {
+		this.importDypHandler = importDypHandler;
 	}
 
 }

@@ -10,6 +10,7 @@ import de.torsten.kickertool.controller.GameController.IteratorSupplier;
 import de.torsten.kickertool.model.Game;
 import de.torsten.kickertool.model.Player;
 import de.torsten.kickertool.model.PlayerPoints;
+import de.torsten.kickertool.view.TabPane;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -24,14 +25,17 @@ import javafx.event.EventHandler;
 @SuppressWarnings("nls")
 public final class FirstGamePlayersImporter implements EventHandler<ActionEvent> {
 	private final Collection<Player> existingPlayers;
+	private final TabPane<Game> tabPane;
 
-	public FirstGamePlayersImporter(Collection<Player> existingPlayers) {
+	public FirstGamePlayersImporter(Collection<Player> existingPlayers, TabPane<Game> tabPane) {
 		this.existingPlayers = existingPlayers;
+		this.tabPane = tabPane;
 	}
 
 	@Override
 	public void handle(ActionEvent event) {
 		Game game = new Game();
+		game.setCreated("31.03.2016");
 		game.getPlayers().addAll(createPlayersForFirstGame());
 		game.setPlayerPoints(game.getPlayers().stream().map(p -> new PlayerPoints(p)).collect(Collectors.toList()));
 		IteratorSupplier pointsSupplier = new IteratorSupplier(GameController.getDypTourPoints());
@@ -42,7 +46,7 @@ public final class FirstGamePlayersImporter implements EventHandler<ActionEvent>
 		for (Player player : game.getPlayers()) {
 			game.addInGamePoints(player, inGameSupplier.get());
 		}
-		new GameController().syncPlayers(existingPlayers, game);
+		tabPane.addTab(game);
 	}
 
 	private Collection<Player> createPlayersForFirstGame() {

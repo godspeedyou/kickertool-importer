@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -20,6 +21,7 @@ import com.google.common.base.Joiner;
 import de.torsten.kickertool.model.Game;
 import de.torsten.kickertool.model.Player;
 import de.torsten.kickertool.view.column.ColumnCreator;
+import de.torsten.kickertool.view.column.DoubleColumnCreator.DoublePrecisionStringConverter;
 import de.torsten.kickertool.view.column.SortableColumn;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -105,10 +107,36 @@ public final class PrintHandler implements EventHandler<ActionEvent> {
 	}
 
 	private String createTableHeader(Collection<String> titles) {
-		return "[tr]" + titles.stream().map(t -> tableData(bold(t))).collect(Collectors.joining())
-				+ tableData(bold("Jackpot in Euro: "
-						+ String.valueOf(existingPlayers.stream().mapToDouble(Player::getMoney).sum())))
-				+ "Anzahl der Turniere: " + games.size() + "[/tr]";
+		return getGameCount() + newLine() + getJackpot() + newLine() + getMostVisitedDate() + newLine()
+				+ tableRow(titles.stream().map(t -> tableData(bold(t))).collect(Collectors.joining()));
+	}
+
+	private String getMostVisitedDate() {
+		Game mostVisitedGame = games.stream().sorted(new Comparator<Game>() {
+
+			@Override
+			public int compare(Game o1, Game o2) {
+				return Integer.compare(o2.getPlayers().size(), o1.getPlayers().size());
+			}
+		}).findFirst().orElse(null);
+		return String.format("Meist besuchtes Turnier am %s mit %s Teilnehmern. ", mostVisitedGame.getCreated(),
+				mostVisitedGame.getPlayers().size());
+	}
+
+	private String getJackpot() {
+		return "Jackpot in Euro: " + String.valueOf(existingPlayers.stream().mapToDouble(Player::getMoney).sum());
+	}
+
+	private String getGameCount() {
+		return "Anzahl der Turniere: " + games.size();
+	}
+
+	private String newLine() {
+		return "[br]";
+	}
+
+	private String tableRow(String string) {
+		return "[tr] " + string + "[/tr]";
 	}
 
 	private String tableData(String string) {
@@ -127,6 +155,10 @@ public final class PrintHandler implements EventHandler<ActionEvent> {
 
 		for (String field : fields) {
 			Object value = getValue(p, field, fieldToProperty);
+
+			if (value instanceof Double) {
+				value = new DoublePrecisionStringConverter().toString((Double) value);
+			}
 
 			if (field.equals(Player.FIELD_POSITION)) {
 				int position = (int) value;
