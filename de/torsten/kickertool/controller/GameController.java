@@ -119,6 +119,9 @@ public class GameController {
 			player.setMoneyPercentage(percentage);
 			player.setAveragePoints((double) player.getPoints() / games);
 			player.setGoalsSum(player.getGoalsPositive() + player.getGoalsNegative());
+			player.setAverageGoalsPositive((double) player.getGoalsPositive() / games);
+			player.setAverageGoalsNegative((double) player.getGoalsNegative() / games);
+			player.setAverageGoalsSum((double) player.getGoalsSum() / games);
 		}
 
 		int i = 1;

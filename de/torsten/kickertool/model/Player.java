@@ -55,20 +55,25 @@ public class Player implements Comparable<Player> {
 	private final SimpleIntegerProperty inGamePoints = new SimpleIntegerProperty();
 	@ViewColumn(title = "Prozent am Gesamtgewinn", columnPosition = 60, isPrintable = true)
 	private final SimpleIntegerProperty moneyPercentage = new SimpleIntegerProperty();
-	@ViewColumn(title = "Durchschnittliche Punktzahl pro Turnier", columnPosition = 70, isPrintable = true)
+	@ViewColumn(title = "Punkte \u2300", columnPosition = 70, isPrintable = true)
 	private final SimpleDoubleProperty averagePoints = new SimpleDoubleProperty();
 	@ViewColumn(title = "Tore (positiv)", columnPosition = 80, isPrintable = true)
 	private final SimpleIntegerProperty goalsPositive = new SimpleIntegerProperty();
 	@ViewColumn(title = "Tore (negativ)", columnPosition = 90, isPrintable = true)
 	private final SimpleIntegerProperty goalsNegative = new SimpleIntegerProperty();
 	@ViewColumn(title = "Tore (+/-)", columnPosition = 100, isPrintable = true)
-	private int goalsSum;
-	@ViewColumn(title = "Geldgewinn", columnPosition = 110, isPrintable = true)
+	private final SimpleIntegerProperty goalsSum = new SimpleIntegerProperty();
+	@ViewColumn(title = "Tore (positiv) \u2300", columnPosition = 110, isPrintable = true)
+	private final SimpleDoubleProperty averageGoalsPositive = new SimpleDoubleProperty();
+	@ViewColumn(title = "Tore (negativ) \u2300", columnPosition = 120, isPrintable = true)
+	private final SimpleDoubleProperty averageGoalsNegative = new SimpleDoubleProperty();
+	@ViewColumn(title = "Tore (+/-) \u2300", columnPosition = 130, isPrintable = true)
+	private final SimpleDoubleProperty averageGoalsSum = new SimpleDoubleProperty();
+	@ViewColumn(title = "Geldgewinn", columnPosition = 140, isPrintable = true)
 	private final SimpleDoubleProperty money = new SimpleDoubleProperty();
-	@ViewColumn(title = "Reingewinn", columnPosition = 120)
+	@ViewColumn(title = "Reingewinn", columnPosition = 150)
 	private final SimpleDoubleProperty margin = new SimpleDoubleProperty();
 
-	// TODO Anzahl Tore Durchschnitt pro Spiel: Plus, Minus, Plus-Minus
 	// TODO x von y Spielen
 	// TODO Spieltag mit max. Teilnehmern
 	// TODO Teilnahme an Datum anzeigen
@@ -266,11 +271,38 @@ public class Player implements Comparable<Player> {
 
 	@Transient
 	public int getGoalsSum() {
-		return goalsSum;
+		return goalsSum.get();
 	}
 
 	public void setGoalsSum(int goalsSum) {
-		this.goalsSum = goalsSum;
+		this.goalsSum.set(goalsSum);
+	}
+
+	@Transient
+	public double getAverageGoalsPositive() {
+		return averageGoalsPositive.get();
+	}
+
+	public void setAverageGoalsPositive(double averageGoalsPositive) {
+		this.averageGoalsPositive.set(averageGoalsPositive);
+	}
+
+	@Transient
+	public double getAverageGoalsNegative() {
+		return averageGoalsNegative.get();
+	}
+
+	public void setAverageGoalsNegative(double averageGoalsNegative) {
+		this.averageGoalsNegative.set(averageGoalsNegative);
+	}
+
+	@Transient
+	public double getAverageGoalsSum() {
+		return averageGoalsSum.get();
+	}
+
+	public void setAverageGoalsSum(double averageGoalsSum) {
+		this.averageGoalsSum.set(averageGoalsSum);
 	}
 
 }
